@@ -22,8 +22,4 @@ public class formController implements MainController
     	stage.close();
     }
     
-    public void getTabJoueur()
-    {
-    	
-    }
 }

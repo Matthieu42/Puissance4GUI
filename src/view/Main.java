@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -28,11 +29,11 @@ public class Main extends Application {
         
         primaryStage.setScene(mainScene);
         primaryStage.setResizable(false);
-        
-        
+        primaryStage.getIcons().add(new Image("view/p4.png"));
+        inputStage.getIcons().add(new Image("view/p4.png"));
         inputStage.setScene(inputScene); 
         primaryStage.show();
-        inputStage.show();
+        inputStage.showAndWait();
     }
     
 

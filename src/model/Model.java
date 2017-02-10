@@ -4,21 +4,13 @@ import javafx.scene.paint.Color;
 
 public class Model
 {
-
-	public Joueur[] tabJoueur = new Joueur[2];
-	public int[][] grid = {
-			{-1,-1,-1,-1,-1,-1,-1},
-			{-1,-1,-1,-1,-1,-1,-1},
-			{-1,-1,-1,-1,-1,-1,-1},
-			{-1,-1,-1,-1,-1,-1,-1},
-			{-1,-1,-1,-1,-1,-1,-1},
-			{-1,-1,-1,-1,-1,-1,-1}
-			};
 	private final int NB_LIGNE = 5;
 	private final int NB_COLONNE = 6;
 	private final int TOTAL_NB_JOUEUR = 2;
+	public Joueur[] tabJoueur = new Joueur[2];
+	public int[][] grid = new int[NB_LIGNE+1][NB_COLONNE+1];
 
-	
+
 	public Model()
 	{
 		Color[] tabColor = {Color.YELLOW,Color.RED};
@@ -26,6 +18,7 @@ public class Model
         {
         	tabJoueur[i] = new Joueur(tabColor[i]);
         }
+        this.initGrid();
 	}
 	
 	public boolean areFourConnected(int player){
@@ -62,10 +55,27 @@ public class Model
 	    }
 	    return false;
 	}
-	
+	public void initGrid()
+	{
+		for(int c = 0; c<= this.getWidth(); c++)
+		{
+			for(int l = 0; l<= this.getHeight(); l++)
+			{
+				setCell(-1,l,c);
+			}
+		}
+
+	}
 	public int getCell(int row, int col)
 	{
 		return this.grid[row][col];
+	}
+	public void setCell(int setter, int row, int col)
+	{
+		this.grid[row][col] = setter;
+	}
+	public int[][] getGrid() {
+		return this.grid;
 	}
 	public int getWidth()
 	{
