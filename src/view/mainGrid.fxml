@@ -94,7 +94,7 @@
                   <Button mnemonicParsing="false" onAction="#buttonHandler" opacity="0.0" prefHeight="625.0" prefWidth="110.0" text="7" GridPane.columnIndex="6" GridPane.rowSpan="6" />
                </children>
             </GridPane>
-            <Label layoutX="764.0" layoutY="14.0" prefHeight="64.0" prefWidth="136.0" text="Etat de la partie" textAlignment="CENTER">
+            <Label layoutX="764.0" layoutY="14.0" prefHeight="64.0" prefWidth="136.0" text="État de la partie" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
