@@ -87,6 +87,28 @@ public class GridController implements MainController,Initializable
     		winDialog();
     		win = true;
     	}
+    	if(mainGrid.isFull())
+    	{
+    		Alert draw = new Alert(AlertType.CONFIRMATION);
+        	draw.setTitle("Egalité");
+        	draw.setHeaderText("Voulez-vous faire une nouvelle partie ?");
+        	ButtonType buttonNewGame = new ButtonType("Nouvelle partie");
+        	ButtonType buttonExitGame = new ButtonType("Quitter le jeu");
+        	ButtonType buttonTypeCancel = new ButtonType("Fermer", ButtonData.CANCEL_CLOSE);
+        	draw.getButtonTypes().setAll(buttonNewGame,buttonExitGame,buttonTypeCancel);
+        	Optional<ButtonType> result = draw.showAndWait();
+        	if (result.get() == buttonNewGame)
+        	{
+        		rectGrid.getChildren().clear();
+            	mainGrid.initGrid();
+        	} 
+        	else if (result.get() == buttonExitGame) 
+        	{
+        		Stage stage2 = (Stage) rectGrid.getScene().getWindow();
+            	stage2.close();
+        	}
+        	
+    	}
     	
     	if(nbPlayer == 0)
     			nbPlayer++;
@@ -110,7 +132,6 @@ public class GridController implements MainController,Initializable
     	Alert win = new Alert(AlertType.CONFIRMATION);
     	win.setTitle(mainGrid.tabJoueur[nbPlayer].getPseudo() + " a gagné ! ");
     	win.setHeaderText("Voulez-vous faire une nouvelle partie ?");
-    	win.setContentText("C'est a vous de choisir !");
     	ButtonType buttonNewGame = new ButtonType("Nouvelle partie");
     	ButtonType buttonExitGame = new ButtonType("Quitter le jeu");
     	ButtonType buttonTypeCancel = new ButtonType("Fermer", ButtonData.CANCEL_CLOSE);
@@ -156,6 +177,7 @@ public class GridController implements MainController,Initializable
     	 for(int i = 0; i < mainGrid.getTotalNbJoueur(); i++)
          {
          	mainGrid.tabJoueur[i].resetScores();
+         	updateScorelabel();
          }
     }
     

@@ -54,6 +54,23 @@ public class Grid
 	    }
 	    return EMPTY_SLOT; // no winner found
 	}
+	public boolean isFull()
+	{
+		int full;
+		for(int c = 0; c<grid.length; c++)
+		{
+			for(int l = 0; l<grid[0].length; l++)
+			{
+				full = getCell(c,l);
+				if(full == -1)
+					return false;
+					
+			}
+		}
+		System.out.println("true ! ");
+		return true;
+		
+	}
 	public void initGrid()
 	{
 		for(int c = 0; c<=this.getWidth(); c++)
