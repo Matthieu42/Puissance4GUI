@@ -19,6 +19,10 @@ public class formController implements MainController
     	model.tabJoueur[0].setPseudo(pseudo1.getText());
     	model.tabJoueur[1].setPseudo(pseudo2.getText());
     	Stage stage = (Stage) sendForm.getScene().getWindow();
+    	if(pseudo1.getText().trim().isEmpty() || pseudo2.getText().trim().isEmpty())
+    	{
+    		return;
+    	}
     	stage.close();
     }
     

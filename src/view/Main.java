@@ -24,7 +24,7 @@ public class Main extends Application {
         
         primaryStage.setTitle("Puissance 4");
         inputStage.setTitle("Configuration de la partie");
-        Scene mainScene = new Scene(root, 900, 672);
+        Scene mainScene = new Scene(root, 900, 660);
         Scene inputScene = new Scene(input, 600, 400);
         
         primaryStage.setScene(mainScene);

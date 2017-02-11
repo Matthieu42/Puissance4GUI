@@ -11,8 +11,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -25,6 +27,7 @@ public class GridController implements MainController
     public GridPane rectGrid;
     public Label gameState;
     public MenuItem newGameButton;
+    public MenuItem aboutButton;
     public int nbPlayer = 1;
     @FXML
     private void buttonHandler(ActionEvent event)
@@ -55,9 +58,14 @@ public class GridController implements MainController
 		}
     	gameState.setText("C'est à " + model.tabJoueur[nbPlayer].getPseudo() + " de jouer !" );
     	model.setCell(nbPlayer,row,col);
-    	if(model.areFourConnected(nbPlayer))
+    	if(model.checkWin() == 0)
     	{
-    		gameState.setText(model.tabJoueur[nbPlayer].getPseudo() + " a gagné ! ");
+    		gameState.setText(model.tabJoueur[0].getPseudo() + " a gagné ! ");
+    		winDialog();
+    	}
+    	else if(model.checkWin() == 1)
+    	{
+    		gameState.setText(model.tabJoueur[1].getPseudo() + " a gagné ! ");
     		winDialog();
     	}
     	
@@ -70,15 +78,16 @@ public class GridController implements MainController
     }
     public void winDialog()
     {
-    	Alert alert = new Alert(AlertType.CONFIRMATION);
-    	alert.setTitle(model.tabJoueur[nbPlayer].getPseudo() + " a gagné ! ");
-    	alert.setHeaderText("Voulez-vous faire une nouvelle partie ?");
-    	alert.setContentText("C'est a vous de choisir !");
+    	Alert win = new Alert(AlertType.CONFIRMATION);
+    	win.setTitle(model.tabJoueur[nbPlayer].getPseudo() + " a gagné ! ");
+    	win.setHeaderText("Voulez-vous faire une nouvelle partie ?");
+    	win.setContentText("C'est a vous de choisir !");
     	ButtonType buttonNewGame = new ButtonType("Nouvelle partie");
     	ButtonType buttonExitGame = new ButtonType("Quitter le jeu");
-    	ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-    	alert.getButtonTypes().setAll(buttonNewGame,buttonExitGame,buttonTypeCancel);
-    	Optional<ButtonType> result = alert.showAndWait();
+    	ButtonType buttonTypeCancel = new ButtonType("Fermer", ButtonData.CANCEL_CLOSE);
+ 
+    	win.getButtonTypes().setAll(buttonNewGame,buttonExitGame,buttonTypeCancel);
+    	Optional<ButtonType> result = win.showAndWait();
     	if (result.get() == buttonNewGame)
     	{
     		rectGrid.getChildren().clear();
@@ -86,13 +95,26 @@ public class GridController implements MainController
     	} 
     	else if (result.get() == buttonExitGame) 
     	{
-    		Stage stage = (Stage) rectGrid.getScene().getWindow();
-        	stage.close();
+    		Stage stage2 = (Stage) rectGrid.getScene().getWindow();
+        	stage2.close();
     	}
     	else 
     	{
     	    // ... user chose CANCEL or closed the dialog
     	}
+    }
+    
+    public void aboutDialog()
+    {
+    	Alert about = new Alert(AlertType.INFORMATION);
+    	about.setTitle("À propos");
+    	about.setHeaderText("À propos");
+    	Label lb = new Label("Jeu de puissance 4 développé en java, les sources sont disponible à l'adresse suivante,");
+    	FlowPane fp = new FlowPane();
+    	Hyperlink link = new Hyperlink("https://github.com/Matthieu42/Puissance4GUI");
+    	fp.getChildren().addAll(lb,link);
+    	about.getDialogPane().contentProperty().set(fp);
+    	about.showAndWait();
     }
     public static Rectangle getNodeFromGridPane(int col, int row, GridPane rectGrid) 
     {

@@ -14,52 +14,53 @@ public class Model
 	public Model()
 	{
 		Color[] tabColor = {Color.YELLOW,Color.RED};
-        for(int i = 0; i<getTotalNbJoueur(); i++)
+        for(int i = 0; i < getTotalNbJoueur(); i++)
         {
         	tabJoueur[i] = new Joueur(tabColor[i]);
         }
         this.initGrid();
 	}
 	
-	public boolean areFourConnected(int player){
+	public int checkWin() {
+	    final int HEIGHT = grid.length;
+	    final int WIDTH = grid[0].length;
+	    final int EMPTY_SLOT = -1;
+	    for (int r = 0; r < HEIGHT; r++) { // iterate rows, bottom to top
+	        for (int c = 0; c < WIDTH; c++) { // iterate columns, left to right
+	            int player = grid[r][c];
+	            if (player == EMPTY_SLOT)
+	                continue; // don't check empty slots
 
-	    // horizontalCheck 
-	    for (int j = 0; j<7-3 ; j++ ){
-	        for (int i = 0; i<getWidth(); i++){
-	            if (this.grid[i][j] == player && this.grid[i][j+1] == player && this.grid[i][j+2] == player && this.grid[i][j+3] == player){
-	                return true;
-	            }           
+	            if (c + 3 < WIDTH &&
+	                player == grid[r][c+1] && // look right
+	                player == grid[r][c+2] &&
+	                player == grid[r][c+3])
+	                return player;
+	            if (r + 3 < HEIGHT) {
+	                if (player == grid[r+1][c] && // look up
+	                    player == grid[r+2][c] &&
+	                    player == grid[r+3][c])
+	                    return player;
+	                if (c + 3 < WIDTH &&
+	                    player == grid[r+1][c+1] && // look up & right
+	                    player == grid[r+2][c+2] &&
+	                    player == grid[r+3][c+3])
+	                    return player;
+	                if (c - 3 >= 0 &&
+	                    player == grid[r+1][c-1] && // look up & left
+	                    player == grid[r+2][c-2] &&
+	                    player == grid[r+3][c-3])
+	                    return player;
+	            }
 	        }
 	    }
-	    // verticalCheck
-	    for (int i = 0; i<getWidth()-3 ; i++ ){
-	        for (int j = 0; j<this.getHeight(); j++){
-	            if (this.grid[i][j] == player && this.grid[i+1][j] == player && this.grid[i+2][j] == player && this.grid[i+3][j] == player){
-	                return true;
-	            }           
-	        }
-	    }
-	    // ascendingDiagonalCheck 
-	    for (int i=3; i<getWidth(); i++){
-	        for (int j=0; j<getHeight()-3; j++){
-	            if (this.grid[i][j] == player && this.grid[i-1][j+1] == player && this.grid[i-2][j+2] == player && this.grid[i-3][j+3] == player)
-	                return true;
-	        }
-	    }
-	    // descendingDiagonalCheck
-	    for (int i=3; i<getWidth(); i++){
-	        for (int j=3; j<getHeight(); j++){
-	            if (this.grid[i][j] == player && this.grid[i-1][j-1] == player && this.grid[i-2][j-2] == player && this.grid[i-3][j-3] == player)
-	                return true;
-	        }
-	    }
-	    return false;
+	    return EMPTY_SLOT; // no winner found
 	}
 	public void initGrid()
 	{
-		for(int c = 0; c<= this.getWidth(); c++)
+		for(int c = 0; c<=this.getWidth(); c++)
 		{
-			for(int l = 0; l<= this.getHeight(); l++)
+			for(int l = 0; l<=this.getHeight(); l++)
 			{
 				setCell(-1,l,c);
 			}
