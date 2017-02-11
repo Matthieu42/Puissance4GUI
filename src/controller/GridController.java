@@ -1,10 +1,13 @@
 package controller;
 
 
+import java.net.URL;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -16,26 +19,47 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 
-public class GridController implements MainController
+public class GridController implements MainController,Initializable
 {
     @FXML
     public GridPane buttonGrid;
     public GridPane rectGrid;
     public Label gameState;
+    public Label player1Score;
+    public Label player2Score;
+    public Label player1Pseudo;
+    public Label player2Pseudo;
+    public Circle colorPlayer1;
+    public Circle colorPlayer2;
     public MenuItem newGameButton;
     public MenuItem aboutButton;
-    public int nbPlayer = 1;
+    public MenuItem rulesButton;
+    public MenuItem scoreResetButton;
+    public int nbPlayer = 0;
+    public boolean win = false;
+    
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) 
+	{
+		gameState.setText("C'est à " + mainGrid.tabJoueur[nbPlayer].getPseudo() + " de jouer !" );
+		colorPlayer1.setFill(mainGrid.tabJoueur[0].getColor());
+		colorPlayer2.setFill(mainGrid.tabJoueur[1].getColor());
+		updateScorelabel();
+	}
     @FXML
     private void buttonHandler(ActionEvent event)
     {
-    	Button button = (Button) event.getSource();
     	
+    	Button button = (Button) event.getSource();
     	int col;
-    	int row = model.getHeight();
+    	int row = mainGrid.getHeight();
     	col = button.getText().charAt(0) - '0' -1 ;
 		while(GridController.getNodeFromGridPane(col,row,rectGrid) != null)
 		{
@@ -43,43 +67,48 @@ public class GridController implements MainController
     			return;
     		row--;
 		}
-		
-		
-    	model.tabJoueur[nbPlayer].jouer(col,row,rectGrid);
-    	if(nbPlayer == 0)
+    	mainGrid.tabJoueur[nbPlayer].jouer(col,row,rectGrid);
+
+    	
+    	mainGrid.setCell(nbPlayer,row,col);
+    	int winPlayer = mainGrid.checkWin();
+    	int losePlayer;
+    	if(winPlayer == 0 || winPlayer == 1)
     	{
-    		model.tabJoueur[1].setLastPlayer(false);
-    		nbPlayer++;
-    	}
-		else if(nbPlayer == 1)
-		{
-			model.tabJoueur[0].setLastPlayer(false);
-			nbPlayer--;
-		}
-    	gameState.setText("C'est à " + model.tabJoueur[nbPlayer].getPseudo() + " de jouer !" );
-    	model.setCell(nbPlayer,row,col);
-    	if(model.checkWin() == 0)
-    	{
-    		gameState.setText(model.tabJoueur[0].getPseudo() + " a gagné ! ");
+    		
+    		if(winPlayer == 0)
+    			losePlayer = 1;
+    		else
+    			losePlayer = 0;
+    		gameState.setText(mainGrid.tabJoueur[winPlayer].getPseudo() + " a gagné ! ");
+    		mainGrid.tabJoueur[winPlayer].win();
+    		mainGrid.tabJoueur[losePlayer].lose();
+    		updateScorelabel();
     		winDialog();
-    	}
-    	else if(model.checkWin() == 1)
-    	{
-    		gameState.setText(model.tabJoueur[1].getPseudo() + " a gagné ! ");
-    		winDialog();
+    		win = true;
     	}
     	
+    	if(nbPlayer == 0)
+    			nbPlayer++;
+    		else
+    			nbPlayer--;
+    	if(win)
+    	{
+    		nbPlayer = 0;
+    		win = false;
+    	}
+    	gameState.setText("C'est à " + mainGrid.tabJoueur[nbPlayer].getPseudo() + " de jouer !" );
     }
     
     public void newGame()
     {
     	rectGrid.getChildren().clear();
-    	model.initGrid();
+    	mainGrid.initGrid();
     }
     public void winDialog()
     {
     	Alert win = new Alert(AlertType.CONFIRMATION);
-    	win.setTitle(model.tabJoueur[nbPlayer].getPseudo() + " a gagné ! ");
+    	win.setTitle(mainGrid.tabJoueur[nbPlayer].getPseudo() + " a gagné ! ");
     	win.setHeaderText("Voulez-vous faire une nouvelle partie ?");
     	win.setContentText("C'est a vous de choisir !");
     	ButtonType buttonNewGame = new ButtonType("Nouvelle partie");
@@ -91,16 +120,12 @@ public class GridController implements MainController
     	if (result.get() == buttonNewGame)
     	{
     		rectGrid.getChildren().clear();
-        	model.initGrid();
+        	mainGrid.initGrid();
     	} 
     	else if (result.get() == buttonExitGame) 
     	{
     		Stage stage2 = (Stage) rectGrid.getScene().getWindow();
         	stage2.close();
-    	}
-    	else 
-    	{
-    	    // ... user chose CANCEL or closed the dialog
     	}
     }
     
@@ -116,6 +141,37 @@ public class GridController implements MainController
     	about.getDialogPane().contentProperty().set(fp);
     	about.showAndWait();
     }
+    public void rulesDialog()
+    {
+    	Alert about = new Alert(AlertType.INFORMATION);
+    	about.setTitle("Règles du jeu");
+    	about.setHeaderText("Règles du jeu");
+    	about.setContentText("Le but du jeu est d'aligner 4 pions de sa couleur soit horizontalement , verticalement ou diagonalement.\n"
+    			+ "Chaque victoire rapporte 100 point, une défaite en fait perdre 50 "
+    			+ "et une égalité ne change pas les scores.");
+    	about.showAndWait();
+    }
+    public void scoreReset()
+    {
+    	 for(int i = 0; i < mainGrid.getTotalNbJoueur(); i++)
+         {
+         	mainGrid.tabJoueur[i].resetScores();
+         }
+    }
+    
+    public void updateScorelabel()
+    {
+    		player1Pseudo.setText(mainGrid.tabJoueur[0].getPseudo());
+    		player1Pseudo.setFont(Font.font("System", FontWeight.BOLD, 15));
+    		player2Pseudo.setText(mainGrid.tabJoueur[1].getPseudo());
+    		player2Pseudo.setFont(Font.font("System", FontWeight.BOLD, 15));
+    		
+    		player1Score.setText("Score = " + mainGrid.tabJoueur[0].getScore() + "\n" + "Parties gagné(s) = "
+    		+ mainGrid.tabJoueur[0].getWinCount() + "\n");
+    		player2Score.setText("Score = " + mainGrid.tabJoueur[1].getScore() + "\n" + "Parties gagné(s) = "
+    	    + mainGrid.tabJoueur[1].getWinCount() + "\n");
+    	
+    }
     public static Rectangle getNodeFromGridPane(int col, int row, GridPane rectGrid) 
     {
         for (Node rectangle : rectGrid.getChildren()) 
@@ -125,5 +181,6 @@ public class GridController implements MainController
         }
         return null;
     }
+
     
 }

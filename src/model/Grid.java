@@ -1,8 +1,7 @@
 package model;
 
-import javafx.scene.paint.Color;
 
-public class Model
+public class Grid
 {
 	private final int NB_LIGNE = 5;
 	private final int NB_COLONNE = 6;
@@ -11,12 +10,11 @@ public class Model
 	public int[][] grid = new int[NB_LIGNE+1][NB_COLONNE+1];
 
 
-	public Model()
+	public Grid()
 	{
-		Color[] tabColor = {Color.YELLOW,Color.RED};
         for(int i = 0; i < getTotalNbJoueur(); i++)
         {
-        	tabJoueur[i] = new Joueur(tabColor[i]);
+        	tabJoueur[i] = new Joueur();
         }
         this.initGrid();
 	}
@@ -89,5 +87,16 @@ public class Model
 
 	public int getTotalNbJoueur() {
 		return TOTAL_NB_JOUEUR;
+	}
+	public void display()
+	{
+		for(int[] i : this.grid)
+		{
+			for(int i2 : i )
+			{
+				System.out.print(i2);
+			}
+			System.out.println();
+		}
 	}
 }

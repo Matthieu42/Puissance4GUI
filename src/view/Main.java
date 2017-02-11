@@ -17,23 +17,23 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        Parent root = FXMLLoader.load(getClass().getResource("mainGrid.fxml"));
+        
         Parent input = FXMLLoader.load(getClass().getResource("setupForm.fxml"));
-        
         Stage inputStage = new Stage();
-        
         primaryStage.setTitle("Puissance 4");
         inputStage.setTitle("Configuration de la partie");
-        Scene mainScene = new Scene(root, 900, 660);
         Scene inputScene = new Scene(input, 600, 400);
-        
-        primaryStage.setScene(mainScene);
         primaryStage.setResizable(false);
+        inputStage.setResizable(false);
         primaryStage.getIcons().add(new Image("view/p4.png"));
         inputStage.getIcons().add(new Image("view/p4.png"));
-        inputStage.setScene(inputScene); 
-        primaryStage.show();
+        inputStage.setScene(inputScene);
         inputStage.showAndWait();
+        
+        Parent root = FXMLLoader.load(getClass().getResource("mainGrid.fxml"));
+        Scene mainScene = new Scene(root, 900, 660);
+        primaryStage.setScene(mainScene);
+        primaryStage.show();
     }
     
 

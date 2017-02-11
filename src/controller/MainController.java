@@ -1,9 +1,11 @@
 package controller;
 
-import model.Model;
+import model.ConnectScene;
+import model.Grid;
 
 public interface MainController 
 {
-	Model model = new Model();
+	Grid mainGrid = new Grid();
+	ConnectScene connect = new ConnectScene();
 	
 }

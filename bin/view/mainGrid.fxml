@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,25 +14,28 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="900" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GridController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="900" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GridController">
    <children>
       <MenuBar>
         <menus>
           <Menu mnemonicParsing="false" text="Jeu">
             <items>
               <MenuItem fx:id="newGameButton" mnemonicParsing="false" onAction="#newGame" text="Nouvelle partie" />
+                  <MenuItem fx:id="scoreResetButton" mnemonicParsing="false" onAction="#scoreReset" text="Réinitialiser les scores" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Aide">
             <items>
+                  <MenuItem fx:id="rulesButton" mnemonicParsing="false" onAction="#rulesDialog" text="Régles" />
               <MenuItem fx:id="aboutButton" mnemonicParsing="false" onAction="#aboutDialog" text="A propos" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
-      <AnchorPane prefHeight="672.0" prefWidth="900.0">
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
          <children>
             <GridPane fx:id="rectGrid" prefHeight="633.0" prefWidth="750.0">
                <columnConstraints>
@@ -89,12 +93,25 @@
                   <Button mnemonicParsing="false" onAction="#buttonHandler" opacity="0.0" prefHeight="625.0" prefWidth="110.0" text="7" GridPane.columnIndex="6" GridPane.rowSpan="6" />
                </children>
             </GridPane>
-            <Label layoutX="764.0" layoutY="14.0" prefHeight="64.0" prefWidth="136.0" text="État de la partie" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="762.0" layoutY="14.0" prefHeight="70.0" prefWidth="130.0" text="État de la partie" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
             </Label>
             <Label fx:id="gameState" layoutX="754.0" layoutY="78.0" prefHeight="58.0" prefWidth="146.0" />
+            <Separator layoutX="754.0" layoutY="136.0" prefHeight="11.0" prefWidth="146.0" />
+            <Label alignment="CENTER" layoutX="762.0" layoutY="147.0" prefHeight="58.0" prefWidth="130.0" text="Scores">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Label>
+            <Label fx:id="player1Score" layoutX="762.0" layoutY="280.0" prefHeight="58.0" prefWidth="130.0" />
+            <Label fx:id="player2Score" layoutX="762.0" layoutY="453.0" prefHeight="58.0" prefWidth="130.0" />
+            <Label fx:id="player1Pseudo" layoutX="762.0" layoutY="205.0" prefHeight="25.0" prefWidth="130.0" />
+            <Label fx:id="player2Pseudo" layoutX="762.0" layoutY="378.0" prefHeight="25.0" prefWidth="130.0" />
+            <Separator layoutX="778.0" layoutY="348.0" prefHeight="11.0" prefWidth="98.0" />
+            <Circle fx:id="colorPlayer1" fill="#ecff1f" layoutX="827.0" layoutY="255.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="colorPlayer2" fill="#ff1f1f" layoutX="827.0" layoutY="428.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" />
          </children>
       </AnchorPane>
    </children>
