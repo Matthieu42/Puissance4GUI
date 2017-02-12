@@ -16,7 +16,5 @@ public class ConnectScene
 	public void setFormEnd(boolean formEnd) {
 		this.formEnd = formEnd;
 	}
-	
-	
 
 }

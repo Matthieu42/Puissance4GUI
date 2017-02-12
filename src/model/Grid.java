@@ -1,22 +1,21 @@
 package model;
 
 
+
 public class Grid
 {
 	private final int NB_LIGNE = 5;
 	private final int NB_COLONNE = 6;
 	private final int TOTAL_NB_JOUEUR = 2;
 	public Joueur[] tabJoueur = new Joueur[2];
+	public JoueurIa ia = new JoueurIa();
 	public int[][] grid = new int[NB_LIGNE+1][NB_COLONNE+1];
-
+	public boolean iaGame;
 
 	public Grid()
 	{
-        for(int i = 0; i < getTotalNbJoueur(); i++)
-        {
-        	tabJoueur[i] = new Joueur();
-        }
         this.initGrid();
+        setIaGame(false);
 	}
 	
 	public int checkWin() {
@@ -56,18 +55,15 @@ public class Grid
 	}
 	public boolean isFull()
 	{
-		int full;
 		for(int c = 0; c<grid.length; c++)
 		{
 			for(int l = 0; l<grid[0].length; l++)
 			{
-				full = getCell(c,l);
-				if(full == -1)
+				if(getCell(c,l) == -1)
 					return false;
 					
 			}
 		}
-		System.out.println("true ! ");
 		return true;
 		
 	}
@@ -116,4 +112,23 @@ public class Grid
 			System.out.println();
 		}
 	}
+	public boolean isColFull(int col)
+	{
+		for(int l = 0; l<grid[0].length; l++)
+		{
+			if(getCell(col,l) == -1)
+				return false;
+				
+		}
+		return true;
+	}
+
+	public boolean isIaGame() {
+		return iaGame;
+	}
+
+	public void setIaGame(boolean iaGame) {
+		this.iaGame = iaGame;
+	}
+	
 }

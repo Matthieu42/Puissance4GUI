@@ -4,11 +4,9 @@ package controller;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -20,7 +18,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -54,72 +51,31 @@ public class GridController implements MainController,Initializable
 		updateScorelabel();
 	}
     @FXML
-    private void buttonHandler(ActionEvent event)
+    private void buttonHandler(ActionEvent event) 
     {
     	
     	Button button = (Button) event.getSource();
     	int col;
     	int row = mainGrid.getHeight();
     	col = button.getText().charAt(0) - '0' -1 ;
-		while(GridController.getNodeFromGridPane(col,row,rectGrid) != null)
+		while(mainGrid.getCell(row,col) != -1)
 		{
     		if(row <= 0)
     			return;
     		row--;
 		}
     	mainGrid.tabJoueur[nbPlayer].jouer(col,row,rectGrid);
-
-    	
     	mainGrid.setCell(nbPlayer,row,col);
-    	int winPlayer = mainGrid.checkWin();
-    	int losePlayer;
-    	if(winPlayer == 0 || winPlayer == 1)
+    	winHandling();
+    	if(!mainGrid.isIaGame())
+    		nextPlayer();
+    	updatePlayLabel();
+    	if(mainGrid.isIaGame())
     	{
-    		
-    		if(winPlayer == 0)
-    			losePlayer = 1;
-    		else
-    			losePlayer = 0;
-    		gameState.setText(mainGrid.tabJoueur[winPlayer].getPseudo() + " a gagné ! ");
-    		mainGrid.tabJoueur[winPlayer].win();
-    		mainGrid.tabJoueur[losePlayer].lose();
-    		updateScorelabel();
-    		winDialog();
-    		win = true;
+    		mainGrid.ia.jouer(mainGrid,rectGrid);
+    		updatePlayLabel();
+    		winHandling();
     	}
-    	if(mainGrid.isFull())
-    	{
-    		Alert draw = new Alert(AlertType.CONFIRMATION);
-        	draw.setTitle("Egalité");
-        	draw.setHeaderText("Voulez-vous faire une nouvelle partie ?");
-        	ButtonType buttonNewGame = new ButtonType("Nouvelle partie");
-        	ButtonType buttonExitGame = new ButtonType("Quitter le jeu");
-        	ButtonType buttonTypeCancel = new ButtonType("Fermer", ButtonData.CANCEL_CLOSE);
-        	draw.getButtonTypes().setAll(buttonNewGame,buttonExitGame,buttonTypeCancel);
-        	Optional<ButtonType> result = draw.showAndWait();
-        	if (result.get() == buttonNewGame)
-        	{
-        		rectGrid.getChildren().clear();
-            	mainGrid.initGrid();
-        	} 
-        	else if (result.get() == buttonExitGame) 
-        	{
-        		Stage stage2 = (Stage) rectGrid.getScene().getWindow();
-            	stage2.close();
-        	}
-        	
-    	}
-    	
-    	if(nbPlayer == 0)
-    			nbPlayer++;
-    		else
-    			nbPlayer--;
-    	if(win)
-    	{
-    		nbPlayer = 0;
-    		win = false;
-    	}
-    	gameState.setText("C'est à " + mainGrid.tabJoueur[nbPlayer].getPseudo() + " de jouer !" );
     }
     
     public void newGame()
@@ -127,11 +83,34 @@ public class GridController implements MainController,Initializable
     	rectGrid.getChildren().clear();
     	mainGrid.initGrid();
     }
-    public void winDialog()
+    public void drawDialog()
+    {
+    	Alert draw = new Alert(AlertType.CONFIRMATION);
+    	draw.setTitle("Fin de la partie");
+    	draw.setHeaderText("Egalité, la grille a était remplie sans vainqueur !");
+    	draw.setContentText("Voulez-vous faire une nouvelle partie ?");
+    	ButtonType buttonNewGame = new ButtonType("Nouvelle partie");
+    	ButtonType buttonExitGame = new ButtonType("Quitter le jeu");
+    	ButtonType buttonTypeCancel = new ButtonType("Fermer", ButtonData.CANCEL_CLOSE);
+    	draw.getButtonTypes().setAll(buttonNewGame,buttonExitGame,buttonTypeCancel);
+    	Optional<ButtonType> result = draw.showAndWait();
+    	if (result.get() == buttonNewGame)
+    	{
+    		rectGrid.getChildren().clear();
+        	mainGrid.initGrid();
+    	} 
+    	else if (result.get() == buttonExitGame) 
+    	{
+    		Stage stage2 = (Stage) rectGrid.getScene().getWindow();
+        	stage2.close();
+    	}
+    }
+    public void winDialog(int winPlayer)
     {
     	Alert win = new Alert(AlertType.CONFIRMATION);
-    	win.setTitle(mainGrid.tabJoueur[nbPlayer].getPseudo() + " a gagné ! ");
-    	win.setHeaderText("Voulez-vous faire une nouvelle partie ?");
+    	win.setTitle("Fin de la partie");
+    	win.setHeaderText(mainGrid.tabJoueur[winPlayer].getPseudo() + " a gagné ! ");
+    	win.setContentText("Voulez-vous faire une nouvelle partie ?");
     	ButtonType buttonNewGame = new ButtonType("Nouvelle partie");
     	ButtonType buttonExitGame = new ButtonType("Quitter le jeu");
     	ButtonType buttonTypeCancel = new ButtonType("Fermer", ButtonData.CANCEL_CLOSE);
@@ -194,15 +173,43 @@ public class GridController implements MainController,Initializable
     	    + mainGrid.tabJoueur[1].getWinCount() + "\n");
     	
     }
-    public static Rectangle getNodeFromGridPane(int col, int row, GridPane rectGrid) 
+    public void updatePlayLabel()
     {
-        for (Node rectangle : rectGrid.getChildren()) 
-        {
-			if (GridPane.getColumnIndex(rectangle) == col && GridPane.getRowIndex(rectangle) == row) 
-                return (Rectangle) rectangle;
-        }
-        return null;
+    	gameState.setText("C'est à " + mainGrid.tabJoueur[nbPlayer].getPseudo() + " de jouer !" );
     }
-
-    
+    public void winHandling()
+    {
+    	int winPlayer = mainGrid.checkWin();
+    	int losePlayer;
+    	if(winPlayer == 0 || winPlayer == 1)
+    	{
+    		
+    		if(winPlayer == 0)
+    			losePlayer = 1;
+    		else
+    			losePlayer = 0;
+    		gameState.setText(mainGrid.tabJoueur[winPlayer].getPseudo() + " a gagné ! ");
+    		mainGrid.tabJoueur[winPlayer].win();
+    		mainGrid.tabJoueur[losePlayer].lose();
+    		updateScorelabel();
+    		winDialog(winPlayer);
+    		win = true;
+    	}
+    	if(mainGrid.isFull())
+    	{
+    		drawDialog();
+    	}
+    }
+    public void nextPlayer()
+    {
+    	if(nbPlayer == 0)
+			nbPlayer++;
+		else
+			nbPlayer--;
+    	if(win)
+    	{
+    		nbPlayer = 0;
+    		win = false;
+    	}
+    }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
@@ -20,5 +21,6 @@
       <TextField fx:id="pseudo1" layoutX="287.0" layoutY="151.0" />
       <TextField fx:id="pseudo2" layoutX="287.0" layoutY="189.0" onKeyPressed="#enterPressed" />
       <Button fx:id="sendForm" layoutX="229.0" layoutY="250.0" mnemonicParsing="false" onAction="#formHandler" onKeyPressed="#enterPressed" prefHeight="33.0" prefWidth="116.0" text="Valider" />
+      <CheckBox fx:id="iaCheck" layoutX="109.0" layoutY="193.0" mnemonicParsing="false" onAction="#iaCheckHandler" text="IA" />
    </children>
 </AnchorPane>
