@@ -76,7 +76,9 @@ public class GridController implements MainController,Initializable
     		mainGrid.ia.jouer(mainGrid,rectGrid,buttonGrid);
     		updatePlayLabel();
     		winHandling();
+    		
     	}
+    	win = false;
     }
     
     public void newGame()

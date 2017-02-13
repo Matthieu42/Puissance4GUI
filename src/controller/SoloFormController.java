@@ -54,7 +54,6 @@ public class SoloFormController implements MainController,Initializable
     	Scene gridScene = new Scene(grid, 900, 636);
     	stage.setScene(gridScene);
     	stage.show();
-    	connect.setFormEnd(true);
     }
     public void enterPressed(KeyEvent keyEvent) throws IOException
     {

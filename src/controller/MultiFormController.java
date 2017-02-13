@@ -68,7 +68,6 @@ public class MultiFormController implements MainController,Initializable
     	Scene gridScene = new Scene(grid, 900, 636);
     	stage.setScene(gridScene);
     	stage.show();
-    	connect.setFormEnd(true);
 	}
 
 	@FXML
