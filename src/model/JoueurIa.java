@@ -1,15 +1,18 @@
 package model;
 
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 public class JoueurIa extends Joueur
 {
 
 	public JoueurIa() {
 		super();
+		super.setPseudo("IA");
+		super.setColor(Color.RED);
 	}
 	
-	public void jouer(Grid mainGrid, GridPane rectGrid)
+	public void jouer(Grid mainGrid, GridPane rectGrid, GridPane buttonGrid)
 	{
 		int col = 0;
 		int row = mainGrid.getHeight();
@@ -22,7 +25,7 @@ public class JoueurIa extends Joueur
 					break;
 			}
 		}while(mainGrid.isColFull(col));
-		this.jouer(col,row,rectGrid);
+		this.jouer(col,row,rectGrid,buttonGrid);
 		mainGrid.setCell(1,row,col);
 
 	}

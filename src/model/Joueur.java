@@ -1,8 +1,12 @@
 package model;
 
+import javafx.util.Duration;
+import javafx.animation.TranslateTransition;
+import javafx.scene.effect.Lighting;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Circle;
+import javafx.scene.effect.Light;
 
 public class Joueur 
 {
@@ -17,12 +21,14 @@ public class Joueur
 		setScore(0);
 		setColor(color);
 		setWinCount(0);
+	
 	}
 	public Joueur()
 	{
 		setScore(0);
 		setColor(color);
 		setWinCount(0);
+
 	}
 	
 	public String getPseudo() 
@@ -53,9 +59,29 @@ public class Joueur
 		this.color = color;
 	}
 	
-	public void jouer(int col,int row, GridPane rectGrid)
+	public void jouer(int col,int row, GridPane rectGrid, GridPane buttonGrid)
 	{
-		rectGrid.add(new Rectangle(110,110,getColor()), col,row);
+		Lighting lighting = new Lighting();
+		Light.Distant light = new Light.Distant();
+		light.setAzimuth(45);
+        lighting.setLight(light);
+        lighting.setDiffuseConstant(1.3);
+		Circle circ = new Circle(45,getColor());
+		circ.setEffect(lighting);
+		rectGrid.add(circ,col,0);
+		Duration animTime = Duration.seconds(0.5*((row+5)*0.1));
+	    TranslateTransition tt = new TranslateTransition(animTime,circ);
+	    tt.setToY(100*row);
+	    tt.setOnFinished(e -> 
+	    {
+	    	Circle circ2 = new Circle(45,getColor());
+	    	circ2.setEffect(lighting);
+	    	
+	    	rectGrid.add(circ2, col,row);
+	    	buttonGrid.setDisable(false);
+	    });
+	    tt.play();
+	    buttonGrid.setDisable(true);
 	}
 
 	public void win()

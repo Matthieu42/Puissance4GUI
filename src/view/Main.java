@@ -18,21 +18,18 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception
     {
         
-        Parent input = FXMLLoader.load(getClass().getResource("setupForm.fxml"));
-        Stage inputStage = new Stage();
-        primaryStage.setTitle("Puissance 4");
-        inputStage.setTitle("Configuration de la partie");
-        Scene inputScene = new Scene(input, 600, 400);
-        primaryStage.setResizable(false);
-        inputStage.setResizable(false);
-        primaryStage.getIcons().add(new Image("view/p4.png"));
-        inputStage.getIcons().add(new Image("view/p4.png"));
-        inputStage.setScene(inputScene);
-        inputStage.showAndWait();
         
-        Parent root = FXMLLoader.load(getClass().getResource("mainGrid.fxml"));
-        Scene mainScene = new Scene(root, 900, 660);
-        primaryStage.setScene(mainScene);
+        Parent menu = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+        
+        Scene menuScene = new Scene(menu, 600, 400);
+        
+        //Scene mainScene = new Scene(grid, 900, 636);
+        
+        primaryStage.setTitle("Puissance 4");
+        primaryStage.setResizable(false);
+        primaryStage.getIcons().add(new Image("view/images/p4.png"));
+        
+        primaryStage.setScene(menuScene);
         primaryStage.show();
     }
     

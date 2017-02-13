@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.GaussianBlur?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@StyleSheet.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenuController">
+   <children>
+      <Pane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
+               <image>
+                  <Image url="@images/MenuBackground.jpg" />
+               </image>
+               <effect>
+                  <GaussianBlur radius="20.5" />
+               </effect>
+            </ImageView>
+            <JFXButton fx:id="multiButton" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" layoutX="229.0" layoutY="223.0" onAction="#handleMulti" prefHeight="39.0" prefWidth="144.0" styleClass="Button" stylesheets="@StyleSheet.css" text="Multijoueur" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="soloButton" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" layoutX="228.0" layoutY="140.0" onAction="#handleSolo" prefHeight="47.0" prefWidth="144.0" styleClass="Button" stylesheets="@StyleSheet.css" text="Solo" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </JFXButton>
+            <Label alignment="CENTER" layoutX="125.0" layoutY="25.0" prefHeight="60.0" prefWidth="351.0" text="Puissance 4" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="41.0" />
+               </font>
+            </Label>
+            <Label layoutX="22.0" layoutY="350.0" prefHeight="36.0" prefWidth="270.0" text="Réalisé par Matthieu42 github.com/Matthieu42/" textFill="WHITE" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,15 @@
+    .textField
+    {
+    	-fx-prompt-text-fill:white;
+    	-fx-text-fill:white;
+    }
+    
+    .Button
+    {
+    	-fx-background-color:#3F51B5;
+    }
+    
+    .BackButton
+    {
+    	-fx-graphic:url("images/button_back50.png");
+    }

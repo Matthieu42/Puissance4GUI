@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -51,7 +52,7 @@ public class GridController implements MainController,Initializable
 		updateScorelabel();
 	}
     @FXML
-    private void buttonHandler(ActionEvent event) 
+    private void buttonHandler(ActionEvent event)
     {
     	
     	Button button = (Button) event.getSource();
@@ -64,15 +65,15 @@ public class GridController implements MainController,Initializable
     			return;
     		row--;
 		}
-    	mainGrid.tabJoueur[nbPlayer].jouer(col,row,rectGrid);
+    	mainGrid.tabJoueur[nbPlayer].jouer(col,row,rectGrid,buttonGrid);
     	mainGrid.setCell(nbPlayer,row,col);
     	winHandling();
     	if(!mainGrid.isIaGame())
     		nextPlayer();
     	updatePlayLabel();
-    	if(mainGrid.isIaGame())
+    	if(mainGrid.isIaGame() && !win)
     	{
-    		mainGrid.ia.jouer(mainGrid,rectGrid);
+    		mainGrid.ia.jouer(mainGrid,rectGrid,buttonGrid);
     		updatePlayLabel();
     		winHandling();
     	}
@@ -198,6 +199,7 @@ public class GridController implements MainController,Initializable
     	if(mainGrid.isFull())
     	{
     		drawDialog();
+    		win = true;
     	}
     }
     public void nextPlayer()
@@ -212,4 +214,13 @@ public class GridController implements MainController,Initializable
     		win = false;
     	}
     }
+    public static Circle getNodeFromGridPane(int col, int row, GridPane rectGrid) 
+    {
+        for (Node circle : rectGrid.getChildren()) 
+        {
+			if (GridPane.getColumnIndex(circle) == col && GridPane.getRowIndex(circle) == row) 
+                return (Circle) circle;
+        }
+        return null;
+}
 }
