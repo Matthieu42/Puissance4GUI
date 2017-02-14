@@ -28,6 +28,7 @@
             <items>
               <MenuItem fx:id="newGameButton" mnemonicParsing="false" onAction="#newGame" text="Nouvelle partie" />
                   <MenuItem fx:id="scoreResetButton" mnemonicParsing="false" onAction="#scoreReset" text="Réinitialiser les scores" />
+                  <MenuItem fx:id="mainMenuButton" mnemonicParsing="false" onAction="#loadMainMenu" text="Retour au menu principal" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Aide">

@@ -1,13 +1,17 @@
 package controller;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -40,6 +44,7 @@ public class GridController implements MainController,Initializable
     public MenuItem aboutButton;
     public MenuItem rulesButton;
     public MenuItem scoreResetButton;
+    public MenuItem mainMenuButton;
     public int nbPlayer = 0;
     public boolean win = false;
     
@@ -99,8 +104,7 @@ public class GridController implements MainController,Initializable
     	Optional<ButtonType> result = draw.showAndWait();
     	if (result.get() == buttonNewGame)
     	{
-    		rectGrid.getChildren().clear();
-        	mainGrid.initGrid();
+    		resetGame();
     	} 
     	else if (result.get() == buttonExitGame) 
     	{
@@ -122,8 +126,7 @@ public class GridController implements MainController,Initializable
     	Optional<ButtonType> result = win.showAndWait();
     	if (result.get() == buttonNewGame)
     	{
-    		rectGrid.getChildren().clear();
-        	mainGrid.initGrid();
+    		resetGame();
     	} 
     	else if (result.get() == buttonExitGame) 
     	{
@@ -216,6 +219,24 @@ public class GridController implements MainController,Initializable
     		win = false;
     	}
     }
+    
+    public void loadMainMenu() throws IOException
+    {
+    	Stage stage = (Stage) buttonGrid.getScene().getWindow();
+    	Parent menu = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+    	Scene menuScene = new Scene(menu, 600, 400);
+    	
+    	stage.setScene(menuScene);
+    	stage.show();
+    	resetGame();
+    }
+    
+    public void resetGame()
+    {
+    	scoreReset();
+    	rectGrid.getChildren().clear();
+    	mainGrid.initGrid();
+    }
     public static Circle getNodeFromGridPane(int col, int row, GridPane rectGrid) 
     {
         for (Node circle : rectGrid.getChildren()) 
@@ -224,5 +245,6 @@ public class GridController implements MainController,Initializable
                 return (Circle) circle;
         }
         return null;
-}
+    }
+    
 }
