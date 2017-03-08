@@ -36,7 +36,7 @@
                   <Font name="System Bold" size="41.0" />
                </font>
             </Label>
-            <Label layoutX="22.0" layoutY="350.0" prefHeight="36.0" prefWidth="270.0" text="Réalisé par Matthieu42 github.com/Matthieu42/" textFill="WHITE" />
+            <Label layoutX="22.0" layoutY="350.0" prefHeight="36.0" prefWidth="324.0" text="Réalisé par Matthieu42 github.com/Matthieu42/" textFill="WHITE" />
          </children>
       </Pane>
    </children>

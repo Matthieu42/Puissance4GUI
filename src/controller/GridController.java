@@ -95,7 +95,7 @@ public class GridController implements MainController,Initializable
     {
     	Alert draw = new Alert(AlertType.CONFIRMATION);
     	draw.setTitle("Fin de la partie");
-    	draw.setHeaderText("Egalité, la grille a était remplie sans vainqueur !");
+    	draw.setHeaderText("Égalité, la grille a été remplie sans vainqueur !");
     	draw.setContentText("Voulez-vous faire une nouvelle partie ?");
     	ButtonType buttonNewGame = new ButtonType("Nouvelle partie");
     	ButtonType buttonExitGame = new ButtonType("Quitter le jeu");
@@ -140,9 +140,9 @@ public class GridController implements MainController,Initializable
     	Alert about = new Alert(AlertType.INFORMATION);
     	about.setTitle("À propos");
     	about.setHeaderText("À propos");
-    	Label lb = new Label("Jeu de puissance 4 développé en java, les sources sont disponible à l'adresse suivante,");
+    	Label lb = new Label("Jeu de puissance 4 développé en java, les sources sont disponibles à l'adresse suivante,");
     	FlowPane fp = new FlowPane();
-    	Hyperlink link = new Hyperlink("https://github.com/Matthieu42/Puissance4GUI");
+    	Hyperlink link = new Hyperlink("https://github.com/Matthieu42/Puissance4GUI"); 
     	fp.getChildren().addAll(lb,link);
     	about.getDialogPane().contentProperty().set(fp);
     	about.showAndWait();
@@ -153,7 +153,7 @@ public class GridController implements MainController,Initializable
     	about.setTitle("Règles du jeu");
     	about.setHeaderText("Règles du jeu");
     	about.setContentText("Le but du jeu est d'aligner 4 pions de sa couleur soit horizontalement , verticalement ou diagonalement.\n"
-    			+ "Chaque victoire rapporte 100 point, une défaite en fait perdre 50 "
+    			+ "Chaque victoire rapporte 100 points, une défaite en fait perdre 50 "
     			+ "et une égalité ne change pas les scores.");
     	about.showAndWait();
     }
@@ -233,7 +233,6 @@ public class GridController implements MainController,Initializable
     
     public void resetGame()
     {
-    	scoreReset();
     	rectGrid.getChildren().clear();
     	mainGrid.initGrid();
     }

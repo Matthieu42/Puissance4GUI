@@ -8,5 +8,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="D:/Users/Matthieu/Downloads/jfoenix.jar"/>
+	<classpathentry kind="lib" path="D:/Users/Matthieu/Documents/Documents/Programmes/Java/workspaceEclipse/Puissance4GUI/jfoenix.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
